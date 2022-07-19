@@ -26,6 +26,10 @@ public class PostStore {
         return INST;
     }
 
+    public Post findById(int id) {
+        return posts.get(id);
+    }
+
     public Collection<Post> findAll() {
         return posts.values();
     }
@@ -33,5 +37,9 @@ public class PostStore {
     public void add(Post post) {
         post.setId(counter.incrementAndGet());
         posts.put(post.getId(), post);
+    }
+
+    public void update(Post post) {
+        posts.replace(post.getId(), post);
     }
 }
