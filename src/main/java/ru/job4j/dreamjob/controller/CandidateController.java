@@ -7,19 +7,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.model.Post;
-import ru.job4j.dreamjob.store.CandidateStore;
+import ru.job4j.dreamjob.service.CandidateService;
 
 import java.time.LocalDateTime;
 
 @Controller
 public class CandidateController {
 
-    private final CandidateStore store = CandidateStore.instOf();
+    private final CandidateService candidateService = CandidateService.instOf();
 
     @GetMapping("/candidates")
     public String candidates(Model model) {
-        model.addAttribute("candidates", store.findAll());
+        model.addAttribute("candidates", candidateService.findAll());
         return "candidates";
     }
 
@@ -30,7 +29,7 @@ public class CandidateController {
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
     public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {
-        model.addAttribute("candidate", store.findById(id));
+        model.addAttribute("candidate", candidateService.findById(id));
         return "updateCandidate";
     }
 
@@ -39,7 +38,7 @@ public class CandidateController {
         LocalDateTime now = LocalDateTime.now();
         candidate.setCreated(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(),
                 now.getHour(), now.getMinute()));
-        store.add(candidate);
+        candidateService.add(candidate);
         return "redirect:/candidates";
     }
 
@@ -48,7 +47,7 @@ public class CandidateController {
         LocalDateTime now = LocalDateTime.now();
         candidate.setCreated(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(),
                 now.getHour(), now.getMinute()));
-        store.update(candidate);
+        candidateService.update(candidate);
         return "redirect:/candidates";
     }
 }
