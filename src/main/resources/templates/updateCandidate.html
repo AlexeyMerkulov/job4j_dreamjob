@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -13,50 +14,44 @@
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Работа мечты!</title>
+
+    <title>Работа мечты</title>
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Работа мечты</a>
+        <a class="navbar-brand" href="#">Dream Job, <small th:text="${user}"></small></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" th:href="@{/index}">Главная</a>
+                <a class="nav-item nav-link" href="#">Главная</a>
                 <a class="nav-item nav-link" th:href="@{/posts}">Вакансии</a>
                 <a class="nav-item nav-link" th:href="@{/formAddPost}">Добавить вакансию</a>
-                <a class="nav-item nav-link active" href="#">Кандидаты <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" th:href="@{/formAddCandidate}">Добавить кандидата</a>
+                <a class="nav-item nav-link" th:href="@{/cadidates}">Кандидаты</a>
+                <a class="nav-item nav-link active" th:href="@{/formAddCandidate}">Добавить кандидата</a>
             </div>
         </div>
     </nav>
-    <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Название</th>
-                <th scope="col">Описание</th>
-                <th scope="col">Время создания</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="candidate: ${candidates}">
-                <td th:text="${candidate.id}" />
-                <td>
-                    <a th:href="@{|/formUpdateCandidate/${candidate.id}|}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    <span th:text="${candidate.name}"></span>
-                </td>
-                <td th:text="${candidate.description}" />
-                <td th:text="${candidate.created}" />
-            </tr>
-            </tbody>
-        </table>
+    <div class="row pt-3">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Редактирование резюме кандидата
+            </div>
+            <div class="card-body">
+                <form th:action="@{/updateCandidate}" method="POST" th:object="${candidate}">
+                    <input type="hidden" name="id" th:field="*{id}"/>
+                    <div class="form-group">
+                        <label for="name">Имя кандидата</label>
+                        <input type="text" class="form-control" name="name" id="name" th:field="*{name}">
+                        <label for="name">Резюме кандидата</label>
+                        <input type="text" class="form-control" name="description" id="description" th:field="*{description}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 </body>
