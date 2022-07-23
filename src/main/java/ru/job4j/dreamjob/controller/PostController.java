@@ -35,7 +35,9 @@ public class PostController {
 
     @GetMapping("/formUpdatePost/{postId}")
     public String formUpdatePost(Model model, @PathVariable("postId") int id) {
-        model.addAttribute("post", postService.findById(id));
+        Post post = postService.findById(id);
+        post.setVisible(false);
+        model.addAttribute("post", post);
         return "updatePost";
     }
 
