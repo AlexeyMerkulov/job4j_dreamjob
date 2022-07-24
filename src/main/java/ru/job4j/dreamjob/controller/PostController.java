@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
+import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
 
 import java.time.LocalDateTime;
@@ -17,9 +19,11 @@ import java.time.LocalDateTime;
 public class PostController {
 
     private final PostService postService;
+    private final CityService cityService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CityService cityService) {
         this.postService = postService;
+        this.cityService = cityService;
     }
 
     @GetMapping("/posts")
@@ -30,6 +34,7 @@ public class PostController {
 
     @GetMapping("/formAddPost")
     public String formAddPost(Model model) {
+        model.addAttribute("cities", cityService.getAllCities());
         return "addPost";
     }
 
@@ -38,6 +43,7 @@ public class PostController {
         Post post = postService.findById(id);
         post.setVisible(false);
         model.addAttribute("post", post);
+        model.addAttribute("cities", cityService.getAllCities());
         return "updatePost";
     }
 
@@ -46,6 +52,8 @@ public class PostController {
         LocalDateTime now = LocalDateTime.now();
         post.setCreated(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(),
                 now.getHour(), now.getMinute()));
+        City city = cityService.findById(post.getCity().getId());
+        post.setCity(city);
         postService.add(post);
         return "redirect:/posts";
     }
@@ -55,6 +63,8 @@ public class PostController {
         LocalDateTime now = LocalDateTime.now();
         post.setCreated(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(),
                 now.getHour(), now.getMinute()));
+        City city = cityService.findById(post.getCity().getId());
+        post.setCity(city);
         postService.update(post);
         return "redirect:/posts";
     }
