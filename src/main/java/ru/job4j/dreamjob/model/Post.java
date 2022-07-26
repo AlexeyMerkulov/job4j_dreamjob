@@ -20,6 +20,15 @@ public class Post {
         this.created = created;
     }
 
+    public Post(int id, String name, String description, LocalDateTime created, boolean visible, City city) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.created = created;
+        this.visible = visible;
+        this.city = city;
+    }
+
     public int getId() {
         return id;
     }
