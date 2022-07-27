@@ -2,6 +2,8 @@ package ru.job4j.dreamjob.store;
 
 import net.jcip.annotations.ThreadSafe;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
@@ -13,6 +15,8 @@ import java.util.List;
 @ThreadSafe
 @Repository
 public class PostDBStore {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
 
     private final BasicDataSource pool;
 
@@ -30,7 +34,7 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception caught", e);
         }
         return posts;
     }
@@ -48,7 +52,7 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception caught", e);
         }
         return post;
     }
@@ -62,7 +66,7 @@ public class PostDBStore {
             ps.setInt(6, post.getId());
             ps.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception caught", e);
         }
     }
 
@@ -76,7 +80,7 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception caught", e);
         }
         return null;
     }
