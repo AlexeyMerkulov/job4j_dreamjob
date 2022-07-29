@@ -85,6 +85,15 @@ public class PostDBStore {
         return null;
     }
 
+    public void deletePosts() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("DELETE FROM post")) {
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception caught", e);
+        }
+    }
+
     private Post getPost(ResultSet resultSet) throws SQLException {
         return new Post(
                 resultSet.getInt("id"),

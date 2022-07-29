@@ -83,6 +83,15 @@ public class CandidateDBStore {
         return null;
     }
 
+    public void deleteCandidates() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("DELETE FROM candidate")) {
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception caught", e);
+        }
+    }
+
     private Candidate getCandidate(ResultSet resultSet) throws SQLException {
         return new Candidate(
                 resultSet.getInt("id"),
