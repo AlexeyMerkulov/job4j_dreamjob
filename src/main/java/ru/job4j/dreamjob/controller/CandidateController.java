@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.service.CandidateService;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -27,18 +28,21 @@ public class CandidateController {
     }
 
     @GetMapping("/candidates")
-    public String candidates(Model model) {
+    public String candidates(Model model, HttpSession session) {
         model.addAttribute("candidates", candidateService.findAll());
+        UserController.userCheck(model, session);
         return "candidates";
     }
 
     @GetMapping("/formAddCandidate")
-    public String addCandidate(Model model) {
+    public String addCandidate(Model model, HttpSession session) {
+        UserController.userCheck(model, session);
         return "addCandidate";
     }
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
-    public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {
+    public String formUpdateCandidate(Model model, HttpSession session, @PathVariable("candidateId") int id) {
+        UserController.userCheck(model, session);
         model.addAttribute("candidate", candidateService.findById(id));
         return "updateCandidate";
     }

@@ -12,6 +12,7 @@ import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 @ThreadSafe
@@ -27,19 +28,22 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public String posts(Model model) {
+    public String posts(Model model, HttpSession session) {
+        UserController.userCheck(model, session);
         model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
     @GetMapping("/formAddPost")
-    public String formAddPost(Model model) {
+    public String formAddPost(Model model, HttpSession session) {
         model.addAttribute("cities", cityService.getAllCities());
+        UserController.userCheck(model, session);
         return "addPost";
     }
 
     @GetMapping("/formUpdatePost/{postId}")
-    public String formUpdatePost(Model model, @PathVariable("postId") int id) {
+    public String formUpdatePost(Model model, HttpSession session, @PathVariable("postId") int id) {
+        UserController.userCheck(model, session);
         Post post = postService.findById(id);
         post.setVisible(false);
         model.addAttribute("post", post);

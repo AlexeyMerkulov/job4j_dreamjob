@@ -2,14 +2,18 @@ package ru.job4j.dreamjob.controller;
 
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpSession;
 
 @ThreadSafe
 @Controller
-public class IndexControl {
+public class IndexController {
 
     @GetMapping("/index")
-    public String index() {
+    public String index(Model model, HttpSession session) {
+        UserController.userCheck(model, session);
         return "index";
     }
 }
