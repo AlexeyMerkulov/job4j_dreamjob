@@ -64,10 +64,11 @@ public class UserDBStore {
         return user;
     }
 
-    public User findByEmail(String email) {
+    public User findUserByEmailAndPwd(String email, String password) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users WHERE email = ?")) {
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?")) {
             ps.setString(1, email);
+            ps.setString(2, password);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
                     return getUser(it);

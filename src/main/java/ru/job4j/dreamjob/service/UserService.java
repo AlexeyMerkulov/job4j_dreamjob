@@ -21,4 +21,9 @@ public class UserService {
         Optional<User> rsl =  Optional.ofNullable(userStore.add(user));
         return rsl;
     }
+
+    public Optional<User> findUserByEmailAndPwd(String email, String password) {
+        Optional<User> rsl =  Optional.ofNullable(userStore.findUserByEmailAndPwd(email, password));
+        return rsl;
+    }
 }
