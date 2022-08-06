@@ -65,20 +65,20 @@ public class UserDBStore {
         return Optional.of(user);
     }
 
-    public User findUserByEmailAndPwd(String email, String password) {
+    public Optional<User> findUserByEmailAndPwd(String email, String password) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?")) {
             ps.setString(1, email);
             ps.setString(2, password);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return getUser(it);
+                    return Optional.of(getUser(it));
                 }
             }
         } catch (Exception e) {
             LOG.error("Exception caught", e);
         }
-        return null;
+        return Optional.empty();
     }
 
     public void deleteUsers() {
