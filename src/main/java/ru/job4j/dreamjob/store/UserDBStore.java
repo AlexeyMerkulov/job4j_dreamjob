@@ -11,6 +11,7 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ThreadSafe
 @Repository
@@ -39,7 +40,7 @@ public class UserDBStore {
         return users;
     }
 
-    public User add(User user) {
+    public Optional<User> add(User user) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
                      "INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
@@ -54,14 +55,14 @@ public class UserDBStore {
         } catch (PSQLException e) {
             if (e.getMessage().contains(
                     "ОШИБКА: повторяющееся значение ключа нарушает ограничение уникальности \"email_unique\"")) {
-                return null;
+                return Optional.empty();
             } else {
                 LOG.error("PSQLException caught", e);
             }
         } catch (Exception e) {
             LOG.error("Exception caught", e);
         }
-        return user;
+        return Optional.of(user);
     }
 
     public User findUserByEmailAndPwd(String email, String password) {
